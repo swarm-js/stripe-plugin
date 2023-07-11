@@ -4,5 +4,9 @@ export interface StripePluginOptions {
   secretKey: string
   controllerName: string
   model: any
-  onPaymentSuccess: (user: any, metadata: string) => unknown
+  onPaymentSuccess: (
+    user: any,
+    metadata: string,
+    checkoutObject: any
+  ) => unknown
 }

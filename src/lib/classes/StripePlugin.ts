@@ -62,7 +62,7 @@ export class StripePlugin {
         })
 
         if (user) {
-          conf.onPaymentSuccess(user, checkout.metadata.swarmjs)
+          conf.onPaymentSuccess(user, checkout.metadata.swarmjs, checkout)
         }
       }
     }
