@@ -1,4 +1,6 @@
 export interface StripeMongoosePluginOptions {
-  privateKey: string
   secretKey: string
+  firstnameField: string
+  lastnameField: string
+  emailField: string
 }
