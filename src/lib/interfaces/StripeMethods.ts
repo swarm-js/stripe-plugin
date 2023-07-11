@@ -8,4 +8,5 @@ export interface StripeMethods {
     cancel_url?: string | null,
     metadata?: string
   ): Promise<string>
+  getCheckoutSession(id: string): Promise<any>
 }

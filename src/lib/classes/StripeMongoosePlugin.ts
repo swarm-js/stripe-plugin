@@ -88,4 +88,11 @@ export function StripeMongoosePlugin (
       return session.url
     }
   )
+
+  schema.method(
+    'getCheckoutSession',
+    async function getCheckoutSession (id: string) {
+      return await stripe.checkout.sessions.retrieve(id)
+    }
+  )
 }
