@@ -46,7 +46,7 @@ export function StripeMongoosePlugin (
     return next()
   })
 
-  schema.static(
+  schema.method(
     'getStripePortalURL',
     async function getStripePortalURL (redirectUrl: string) {
       const session = await stripe.billingPortal.sessions.create({
@@ -58,7 +58,7 @@ export function StripeMongoosePlugin (
     }
   )
 
-  schema.static(
+  schema.method(
     'createCheckoutSession',
     async function createCheckoutSession (
       lines: StripeLine[],
