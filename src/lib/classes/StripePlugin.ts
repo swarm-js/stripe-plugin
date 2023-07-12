@@ -46,6 +46,8 @@ export class StripePlugin {
 
       const sig = request.headers['stripe-signature']
 
+      console.log(request.rawBody)
+
       let event: Stripe.Event = stripe.webhooks.constructEvent(
         request.rawBody,
         sig,
