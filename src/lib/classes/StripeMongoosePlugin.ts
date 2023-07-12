@@ -11,6 +11,13 @@ export function StripeMongoosePlugin (
     firstnameField: 'firstname',
     lastnameField: 'lastname',
     emailField: 'email',
+    phoneField: '',
+    addressLine1Field: '',
+    addressLine2Field: '',
+    addressPostalCodeField: '',
+    addressCityField: '',
+    addressStateField: '',
+    addressCountryField: '',
     secretKey: '',
     paymentMethodTypes: ['card'],
     ...options
@@ -28,19 +35,55 @@ export function StripeMongoosePlugin (
     // If no customer is attached to this user, create one
     if (!this.swarmStripeId) {
       const customer = await stripe.customers.create({
-        name: `${this[conf.firstnameField]} ${this[conf.lastnameField]}`,
-        email: this[conf.emailField]
+        name: `${this.get(conf.firstnameField)} ${this.get(
+          conf.lastnameField
+        )}`,
+        email: this.get(conf.emailField),
+        phone: conf.phoneField ? this.get(conf.phoneField) : '',
+        address: {
+          line1: conf.addressLine1Field ? this.get(conf.addressLine1Field) : '',
+          line2: conf.addressLine2Field ? this.get(conf.addressLine2Field) : '',
+          postal_code: conf.addressPostalCodeField
+            ? this.get(conf.addressPostalCodeField)
+            : '',
+          city: conf.addressCityField ? this.get(conf.addressCityField) : '',
+          state: conf.addressStateField ? this.get(conf.addressStateField) : '',
+          country: conf.addressCountryField
+            ? this.get(conf.addressCountryField)
+            : ''
+        }
       })
       this.swarmStripeId = customer.id
     } else if (
       this.isModified(conf.firstnameField) ||
       this.isModified(conf.lastnameField) ||
-      this.isModified(conf.emailField)
+      this.isModified(conf.emailField) ||
+      (conf.phoneField && this.isModified(conf.phoneField)) ||
+      (conf.addressLine1Field && this.isModified(conf.addressLine1Field)) ||
+      (conf.addressLine2Field && this.isModified(conf.addressLine2Field)) ||
+      (conf.addressPostalCodeField &&
+        this.isModified(conf.addressPostalCodeField)) ||
+      (conf.addressCityField && this.isModified(conf.addressCityField)) ||
+      (conf.addressStateField && this.isModified(conf.addressStateField)) ||
+      (conf.addressCountryField && this.isModified(conf.addressCountryField))
     ) {
       // If informations are updated, keep Stripe synced
       await stripe.customers.update(this.swarmStripeId, {
         name: `${this[conf.firstnameField]} ${this[conf.lastnameField]}`,
-        email: this[conf.emailField]
+        email: this[conf.emailField],
+        phone: conf.phoneField ? this.get(conf.phoneField) : '',
+        address: {
+          line1: conf.addressLine1Field ? this.get(conf.addressLine1Field) : '',
+          line2: conf.addressLine2Field ? this.get(conf.addressLine2Field) : '',
+          postal_code: conf.addressPostalCodeField
+            ? this.get(conf.addressPostalCodeField)
+            : '',
+          city: conf.addressCityField ? this.get(conf.addressCityField) : '',
+          state: conf.addressStateField ? this.get(conf.addressStateField) : '',
+          country: conf.addressCountryField
+            ? this.get(conf.addressCountryField)
+            : ''
+        }
       })
     }
 
