@@ -54,7 +54,9 @@ export function StripeMongoosePlugin (
             ? this.get(conf.addressCountryField)
             : ''
         },
-        preferred_locales: conf.localeField ? [this.get(conf.localeField)] : []
+        preferred_locales: conf.localeField
+          ? [this.get(conf.localeField)]
+          : [conf.invoiceLang]
       })
       this.swarmStripeId = customer.id
     } else if (
@@ -88,7 +90,9 @@ export function StripeMongoosePlugin (
             ? this.get(conf.addressCountryField)
             : ''
         },
-        preferred_locales: conf.localeField ? [this.get(conf.localeField)] : []
+        preferred_locales: conf.localeField
+          ? [this.get(conf.localeField)]
+          : [conf.invoiceLang]
       })
     }
 
