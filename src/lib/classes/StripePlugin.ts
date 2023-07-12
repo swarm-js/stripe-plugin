@@ -32,7 +32,8 @@ export class StripePlugin {
       {
         method: 'POST',
         route: '/webhook',
-        title: 'Receive webhooks'
+        title: 'Receive webhooks',
+        rawBody: true
       }
     )
   }
@@ -46,10 +47,8 @@ export class StripePlugin {
 
       const sig = request.headers['stripe-signature']
 
-      console.log(request.rawBody)
-
       let event: Stripe.Event = stripe.webhooks.constructEvent(
-        request.rawBody,
+        request.body,
         sig,
         conf.endpointSecret
       )
