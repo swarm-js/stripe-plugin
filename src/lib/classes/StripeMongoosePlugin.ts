@@ -18,8 +18,10 @@ export function StripeMongoosePlugin (
     addressCityField: '',
     addressStateField: '',
     addressCountryField: '',
+    localeField: '',
     secretKey: '',
     paymentMethodTypes: ['card'],
+    invoiceLang: 'auto',
     ...options
   }
 
@@ -51,7 +53,8 @@ export function StripeMongoosePlugin (
           country: conf.addressCountryField
             ? this.get(conf.addressCountryField)
             : ''
-        }
+        },
+        preferred_locales: conf.localeField ? [this.get(conf.localeField)] : []
       })
       this.swarmStripeId = customer.id
     } else if (
@@ -65,7 +68,8 @@ export function StripeMongoosePlugin (
         this.isModified(conf.addressPostalCodeField)) ||
       (conf.addressCityField && this.isModified(conf.addressCityField)) ||
       (conf.addressStateField && this.isModified(conf.addressStateField)) ||
-      (conf.addressCountryField && this.isModified(conf.addressCountryField))
+      (conf.addressCountryField && this.isModified(conf.addressCountryField)) ||
+      (conf.localeField && this.isModified(conf.localeField))
     ) {
       // If informations are updated, keep Stripe synced
       await stripe.customers.update(this.swarmStripeId, {
@@ -83,7 +87,8 @@ export function StripeMongoosePlugin (
           country: conf.addressCountryField
             ? this.get(conf.addressCountryField)
             : ''
-        }
+        },
+        preferred_locales: conf.localeField ? [this.get(conf.localeField)] : []
       })
     }
 
@@ -123,6 +128,9 @@ export function StripeMongoosePlugin (
         })),
         mode: 'payment',
         success_url,
+        locale: conf.localeField
+          ? this.get(conf.localeField)
+          : conf.invoiceLang,
         cancel_url: cancel_url ?? success_url,
         customer: this.swarmStripeId,
         automatic_tax: {
