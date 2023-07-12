@@ -81,6 +81,9 @@ export function StripeMongoosePlugin (
         success_url,
         cancel_url: cancel_url ?? success_url,
         customer: this.swarmStripeId,
+        automatic_tax: {
+          enabled: true
+        },
         metadata: {
           swarmjs: metadata
         }
