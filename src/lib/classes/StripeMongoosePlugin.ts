@@ -73,7 +73,7 @@ export function StripeMongoosePlugin (
             product_data: {
               name: line.name
             },
-            unit_amount: line.unit
+            unit_amount: line.unit * 100
           },
           quantity: line.qty
         })),
