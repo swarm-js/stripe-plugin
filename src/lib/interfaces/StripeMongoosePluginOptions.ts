@@ -3,4 +3,5 @@ export interface StripeMongoosePluginOptions {
   firstnameField: string
   lastnameField: string
   emailField: string
+  paymentMethodTypes: string[]
 }

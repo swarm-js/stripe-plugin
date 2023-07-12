@@ -12,6 +12,7 @@ export function StripeMongoosePlugin (
     lastnameField: 'lastname',
     emailField: 'email',
     secretKey: '',
+    paymentMethodTypes: ['card'],
     ...options
   }
 
@@ -84,6 +85,11 @@ export function StripeMongoosePlugin (
         automatic_tax: {
           enabled: true
         },
+        invoice_creation: {
+          enabled: true
+        },
+        payment_method_types: ['card'],
+        payment_intent_data: { setup_future_usage: 'on_session' },
         metadata: {
           swarmjs: metadata
         }
